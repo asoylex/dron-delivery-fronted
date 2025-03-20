@@ -48,10 +48,21 @@ export default function LayoutClient({ children }: LayoutClientProps) {
                                 >
                                     Historial de Pedidos
                                 </a>
-                                
+                                <a
+                                    href="#"
+                                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                >
+                                    Projects
+                                </a>
+                                <a
+                                    href="#"
+                                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                >
+                                    Calendar
+                                </a>
                             </div>
                         </div>
-                        {/* <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                             <button
                                 type="button"
                                 className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-hidden"
@@ -104,7 +115,7 @@ export default function LayoutClient({ children }: LayoutClientProps) {
                                     </MenuItem>
                                 </MenuItems>
                             </Menu>
-                        </div> */}
+                        </div>
                     </div>
                 </div>
 
