@@ -15,7 +15,7 @@ const center = {
 export default function ClientHome() {
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: 'AIzaSyAuRJewHuegUVRF_XyHxHI13Un0-QXiQNY',
+        googleMapsApiKey: process.env.NEXT_PUBLIC_API_MAPS || '',
     });
 
     const [clickedLatLng, setClickedLatLng] = useState<{ lat: number; lng: number } | null>(null);

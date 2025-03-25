@@ -29,7 +29,7 @@ export default function Example() {
     const [open, setOpen] = useState(false)
     const { isLoaded } = useJsApiLoader({
         id: 'google-map-script',
-        googleMapsApiKey: 'AIzaSyAuRJewHuegUVRF_XyHxHI13Un0-QXiQNY',
+        googleMapsApiKey: process.env.NEXT_PUBLIC_API_MAPS || '',
     })
 
     const [path] = useState([startPoint, endPoint]);
