@@ -13,10 +13,13 @@
     "@heroicons/react": "^2.2.0",
     "@next/third-parties": "^15.2.3",
     "@react-google-maps/api": "^2.20.6",
+    "formik": "^2.4.6",
     "next": "^15.2.3",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "sweetalert2": "^11.17.2",
+    "yup": "^1.6.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,34 +1,52 @@
 "use client";
-import React, { useState } from 'react';
+import { createCredentialAndRegisterUser } from '../services/user';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { successAlert, errorAlert } from '../helper/alert';
+import { useRouter } from 'next/navigation';
+
 
 export default function RegisterPage() {
-    const [formData, setFormData] = useState({
-        name: '',
-        username: '',
-        phone: '',
-        address: '',
-        lat: '',
-        long: '',
-        enable: true,
-        credits: 0,
-        email: '',
-        password: '',
-        confirmPassword: '',
+    const router = useRouter();
+
+    const validationSchema = Yup.object({
+        name: Yup.string().required("El nombre es obligatorio"),
+        username: Yup.string().required("El nombre de usuario es obligatorio"),
+        phone: Yup.string().matches(/^\d{8,15}$/, "Número de teléfono inválido").required("El teléfono es obligatorio"),
+        address: Yup.string().required("La dirección es obligatoria"),
+        email: Yup.string().email("Correo inválido").required("El correo es obligatorio"),
+        password: Yup.string().min(6, "Mínimo 6 caracteres").required("Contraseña obligatoria"),
+        confirmPassword: Yup.string()
+            .oneOf([Yup.ref("password")], "Las contraseñas no coinciden")
+            .required("Debe confirmar la contraseña"),
     });
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value,
-        });
-    };
+    const formik = useFormik({
+        initialValues: {
+            name: "",
+            username: "",
+            phone: "",
+            address: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+        },
+        validationSchema,
+        onSubmit: async (values) => {
+            try {
+                await createCredentialAndRegisterUser(values);
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        // Handle form submission
-        console.log(formData);
-    };
+                router.push('/client');
+
+                successAlert("Registro exitoso")
+
+            } catch (error) {
+                errorAlert("Hubo un problema con el registro " + error);
+            }
+        },
+    });
+
+
 
     return (
         <div className="flex min-h-full flex-1 items-center justify-center px-4 py-12 sm:px-6 lg:px-8 h-screen">
@@ -40,112 +58,33 @@ export default function RegisterPage() {
                         className="mx-auto h-10 w-auto"
                     />
                 </div>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    <input
-                        id="name"
-                        name="name"
-                        type="text"
-                        required
-                        placeholder="Nombre"
-                        autoComplete="name"
-                        aria-label="Nombre"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.name}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="username"
-                        name="username"
-                        type="text"
-                        required
-                        placeholder="Nombre de usuario"
-                        autoComplete="username"
-                        aria-label="Nombre de usuario"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.username}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="phone"
-                        name="phone"
-                        type="tel"
-                        required
-                        placeholder="Teléfono"
-                        autoComplete="tel"
-                        aria-label="Teléfono"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.phone}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="address"
-                        name="address"
-                        type="text"
-                        placeholder="Dirección"
-                        autoComplete="address"
-                        aria-label="Dirección"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.address}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="lat"
-                        name="lat"
-                        type="number"
-                        placeholder="Latitud"
-                        autoComplete="lat"
-                        aria-label="Latitud"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.lat}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="long"
-                        name="long"
-                        type="number"
-                        placeholder="Longitud"
-                        autoComplete="long"
-                        aria-label="Longitud"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.long}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="email-address"
-                        name="email"
-                        type="email"
-                        required
-                        placeholder="Correo electrónico"
-                        autoComplete="email"
-                        aria-label="Correo electrónico"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.email}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="password"
-                        name="password"
-                        type="password"
-                        required
-                        placeholder="Contraseña"
-                        autoComplete="new-password"
-                        aria-label="Contraseña"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.password}
-                        onChange={handleChange}
-                    />
-                    <input
-                        id="confirm-password"
-                        name="confirmPassword"
-                        type="password"
-                        required
-                        placeholder="Confirmar contraseña"
-                        autoComplete="new-password"
-                        aria-label="Confirmar contraseña"
-                        className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                    />
+                <form onSubmit={formik.handleSubmit} className="space-y-6">
+                    {[
+                        { id: "name", name: "name", type: "text", placeholder: "Nombre" },
+                        { id: "username", name: "username", type: "text", placeholder: "Nombre de usuario" },
+                        { id: "phone", name: "phone", type: "tel", placeholder: "Teléfono" },
+                        { id: "address", name: "address", type: "text", placeholder: "Dirección" },
+                        { id: "email", name: "email", type: "email", placeholder: "Correo electrónico" },
+                        { id: "password", name: "password", type: "password", placeholder: "Contraseña" },
+                        { id: "confirmPassword", name: "confirmPassword", type: "password", placeholder: "Confirmar contraseña" },
+                    ].map(({ id, name, type, placeholder }) => (
+                        <div key={id}>
+                            <input
+                                id={id}
+                                name={name}
+                                type={type}
+                                placeholder={placeholder}
+                                className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:relative focus:outline-2 focus:-outline-offset-2 focus:outline-green-600 sm:text-sm/6"
+                                value={formik.values[name as keyof typeof formik.values]}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur}
+                            />
+                            {formik.touched[name as keyof typeof formik.touched] && formik.errors[name as keyof typeof formik.errors] ? (
+                                <p className="text-red-500 text-xs">{formik.errors[name as keyof typeof formik.errors]}</p>
+                            ) : null}
+                        </div>
+                    ))}
+
                     <button
                         type="submit"
                         className="w-full rounded-md bg-green-600 px-3 py-1.5 text-base text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 sm:text-sm/6"

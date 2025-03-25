@@ -1,18 +1,27 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+import { getAllRoles, saveRole } from "@/app/services/role";
 
 export default function RoleForm() {
     const [roles, setRoles] = useState<{ id: number; name: string; slug: string }[]>([]);
-    const [formData, setFormData] = useState({ name: "", slug: "" });
 
-    const handleChange = (e: { target: { name: string; value: string; }; }) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
+    const initialValues = { name: "", slug: "" };
 
-    const handleSubmit = (e: { preventDefault: () => void; }) => {
-        e.preventDefault();
-        setRoles([...roles, { ...formData, id: roles.length + 1 }]);
-        setFormData({ name: "", slug: "" });
+    const validationSchema = Yup.object({
+        name: Yup.string().required("El nombre es obligatorio"),
+        slug: Yup.string().required("El slug es obligatorio")
+    });
+
+    useEffect(() => {
+        getAllRoles().then((data) => setRoles(data));
+    }, []);
+
+    const handleSubmit = (values: { name: string; slug: string }, { resetForm }: { resetForm: () => void }) => {
+        saveRole(values);
+        setRoles([...roles, { ...values, id: roles.length + 1 }]);
+        resetForm();
     };
 
     return (
@@ -21,42 +30,31 @@ export default function RoleForm() {
                 <h2 className="text-base font-semibold text-gray-900">Información del Rol</h2>
                 <p className="mt-1 text-sm text-gray-600">Agregue la información del rol</p>
 
-                <form onSubmit={handleSubmit} className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                    <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium text-gray-900">Nombre</label>
-                        <div className="mt-2">
-                            <input
-                                name="name"
-                                type="text"
-                                value={formData.name}
-                                onChange={handleChange}
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-green-600 sm:text-sm"
-                            />
+                <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={handleSubmit}>
+                    <Form className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div className="sm:col-span-3">
+                            <label className="block text-sm font-medium text-gray-900">Nombre</label>
+                            <div className="mt-2">
+                                <Field name="name" type="text" className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-green-600 sm:text-sm" />
+                                <ErrorMessage name="name" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="sm:col-span-3">
-                        <label className="block text-sm font-medium text-gray-900">Slug</label>
-                        <div className="mt-2">
-                            <input
-                                name="slug"
-                                type="text"
-                                value={formData.slug}
-                                onChange={handleChange}
-                                className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-green-600 sm:text-sm"
-                            />
+                        <div className="sm:col-span-3">
+                            <label className="block text-sm font-medium text-gray-900">Slug</label>
+                            <div className="mt-2">
+                                <Field name="slug" type="text" className="block w-full rounded-md bg-white px-3 py-1.5 text-gray-900 outline-1 outline-gray-300 placeholder-gray-400 focus:outline-2 focus:outline-green-600 sm:text-sm" />
+                                <ErrorMessage name="slug" component="div" className="text-red-500 text-sm mt-1" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div className="sm:col-span-full">
-                        <button
-                            type="submit"
-                            className="block w-[12rem] rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
-                        >
-                            Guardar
-                        </button>
-                    </div>
-                </form>
+                        <div className="sm:col-span-full">
+                            <button type="submit" className="block w-[12rem] rounded-md bg-green-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-xs hover:bg-green-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600">
+                                Guardar
+                            </button>
+                        </div>
+                    </Form>
+                </Formik>
             </div>
 
             {/* Tabla de Roles */}

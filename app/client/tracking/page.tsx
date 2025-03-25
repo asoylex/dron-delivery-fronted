@@ -157,14 +157,7 @@ export default function Example() {
                                             </div>
                                         </div>
                                     </div>
-                                    <div className="p-4 bg-white rounded-3xl shadow-lg flex flex-col items-center">
-                                        <iframe src="https://lottie.host/embed/4b08e79b-f22b-465a-9827-860241b8af0e/dVYKLErqL4.lottie" width={100}></iframe>
-                                        <iframe src="https://lottie.host/embed/747e8fbf-3249-47e9-9906-58861a1f09ae/Il1rFTAWMr.lottie" width={300}></iframe>
-                                        <h2 className="text-lg font-semibold">Estimación de Entrega</h2>
-                                        <p className="mt-2 text-gray-700">Tiempo estimado: <span className='animate-pulse'>30 minutos</span></p>
-                                        <p className="mt-2 text-gray-700">Precio total: $50.00</p>
-                                    </div>
-                                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
+                                    <div className="relative mt-6 flex-1 px-4 sm:px-6 radius-xl bg-white ">
                                         <fieldset className="border-t border-b border-gray-200">
                                             <legend className="sr-only">Notifications</legend>
                                             <div className="divide-y divide-gray-200">
@@ -318,6 +311,14 @@ export default function Example() {
 
                                         </fieldset>
                                     </div>
+                                    <div className="p-4 bg-white rounded-3xl  flex flex-col items-center">
+                                        <iframe src="https://lottie.host/embed/4b08e79b-f22b-465a-9827-860241b8af0e/dVYKLErqL4.lottie" width={100}></iframe>
+                                        <iframe src="https://lottie.host/embed/747e8fbf-3249-47e9-9906-58861a1f09ae/Il1rFTAWMr.lottie" width={300}></iframe>
+                                        <h2 className="text-lg font-semibold">Estimación de Entrega</h2>
+                                        <p className="mt-2 text-gray-700">Tiempo estimado: <span className='animate-pulse'>30 minutos</span></p>
+                                        <p className="mt-2 text-gray-700">Precio total: Q50.00</p>
+                                    </div>
+
                                 </div>
                             </DialogPanel>
                         </div>
