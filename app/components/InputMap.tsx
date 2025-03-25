@@ -21,7 +21,7 @@ const containerStyle = {
 const InputMap: React.FC<InputMapProps> = ({ onLocationSelected }) => {
     const [selectedLocation, setSelectedLocation] = useState<Center | null>(null);
     const { isLoaded, loadError } = useJsApiLoader({
-        googleMapsApiKey: 'AIzaSyAuRJewHuegUVRF_XyHxHI13Un0-QXiQNY', // Reemplaza con tu API Key real
+        googleMapsApiKey: process.env.NEXT_PUBLIC_API_MAPS || '', // Reemplaza con tu API Key real
     });
 
     function handleMapClick(event: google.maps.MapMouseEvent) {
