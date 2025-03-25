@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import React from 'react';
 
 export default function LoginPage() {
@@ -50,6 +51,12 @@ export default function LoginPage() {
                         </button>
                     </div>
                 </form>
+                <p className="text-center text-sm/6 text-gray-500">
+                    ¿No tienes una cuenta?{' '}
+                    <Link href="/register" className="font-semibold text-green-600 hover:text-green-500">
+                        Regístrate
+                    </Link>
+                </p>
 
             </div>
         </div>

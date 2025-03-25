@@ -1,16 +1,26 @@
 
 
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+"use client";
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
+import { usePathname } from "next/navigation";
+
 
 interface LayoutClientProps {
     children: React.ReactNode;
 }
 
 export default function LayoutClient({ children }: LayoutClientProps) {
+
+    const pathname = usePathname(); // Obtiene la ruta actual
+
+    // Función para verificar si la ruta está activa
+    const isRoute = (path: string) => pathname === path;
     return (
         <div
         >
+
             <Disclosure as="nav" className="bg-white shadow-sm">
                 <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
                     <div className="relative flex h-16 justify-between">
@@ -36,108 +46,97 @@ export default function LayoutClient({ children }: LayoutClientProps) {
                             </div>
                             <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                                 {/* Current: "border-green-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                                <a
-                                    href="#"
-                                    className="inline-flex items-center border-b-2 border-green-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                                <Link
+                                    href="/admin/dron"
+                                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${isRoute("/admin/dron") ? "border-green-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                        }`}
                                 >
-                                    Realizar pedido
-                                </a>
-                                <a
-                                    href="#"
-                                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                    Drones
+                                </Link>
+                                <Link
+                                    href="/admin/product"
+                                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${isRoute("/admin/product") ? "border-green-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                        }`}
                                 >
-                                    Historial de Pedidos
-                                </a>
+                                    Productos
+                                </Link>
+                                <Link
+                                    href="/admin/role"
+                                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${isRoute("/admin/role") ? "border-green-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                        }`}
+                                >
+                                    Roles
+                                </Link>
+                                <Link
+                                    href="/admin/station"
+                                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${isRoute("/admin/station") ? "border-green-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                        }`}
+                                >
+                                    Estaciones
+                                </Link>
+                                <Link
+                                    href="/admin/status"
+                                    className={`inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium ${isRoute("/admin/status") ? "border-green-500 text-gray-900" : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                                        }`}
+                                >
+                                    Estados
+                                </Link>
                             </div>
                         </div>
-                        <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                            <button
-                                type="button"
-                                className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-hidden"
-                            >
-                                <span className="absolute -inset-1.5" />
-                                <span className="sr-only">View notifications</span>
-                                <BellIcon aria-hidden="true" className="size-6" />
-                            </button>
 
-                            {/* Profile dropdown */}
-                            <Menu as="div" className="relative ml-3">
-                                <div>
-                                    <MenuButton className="relative flex rounded-full bg-white text-sm focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-hidden">
-                                        <span className="absolute -inset-1.5" />
-                                        <span className="sr-only">Open user menu</span>
-                                        <img
-                                            alt=""
-                                            src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                                            className="size-8 rounded-full"
-                                        />
-                                    </MenuButton>
-                                </div>
-                                <MenuItems
-                                    transition
-                                    className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
-                                >
-                                    <MenuItem>
-                                        <a
-                                            href="#"
-                                            className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                                        >
-                                            Your Profile
-                                        </a>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <a
-                                            href="#"
-                                            className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                                        >
-                                            Settings
-                                        </a>
-                                    </MenuItem>
-                                    <MenuItem>
-                                        <a
-                                            href="#"
-                                            className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
-                                        >
-                                            Sign out
-                                        </a>
-                                    </MenuItem>
-                                </MenuItems>
-                            </Menu>
-                        </div>
                     </div>
                 </div>
 
                 <DisclosurePanel className="sm:hidden">
                     <div className="space-y-1 pt-2 pb-4">
                         {/* Current: "bg-green-50 border-green-500 text-green-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block border-l-4 border-green-500 bg-green-50 py-2 pr-4 pl-3 text-base font-medium text-green-700"
+                        <Link
+                            href="/admin/dron"
+                            className={`block border-l-4 py-2 pr-4 pl-3 text-base font-medium ${isRoute("/admin/dron")
+                                ? "border-green-500 bg-green-50 text-green-700"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                                }`}
                         >
-                            Dashboard
-                        </DisclosureButton>
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                            Drones
+                        </Link>
+                        <Link
+                            href="/admin/product"
+                            className={`block border-l-4 py-2 pr-4 pl-3 text-base font-medium ${isRoute("/admin/product")
+                                ? "border-green-500 bg-green-50 text-green-700"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                                }`}
                         >
-                            Team
-                        </DisclosureButton>
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                            Productos
+                        </Link>
+                        <Link
+                            href="/admin/role"
+                            className={`block border-l-4 py-2 pr-4 pl-3 text-base font-medium ${isRoute("/admin/role")
+                                ? "border-green-500 bg-green-50 text-green-700"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                                }`}
                         >
-                            Projects
-                        </DisclosureButton>
-                        <DisclosureButton
-                            as="a"
-                            href="#"
-                            className="block border-l-4 border-transparent py-2 pr-4 pl-3 text-base font-medium text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                            Roles
+                        </Link>
+                        <Link
+                            href="/admin/station"
+                            className={`block border-l-4 py-2 pr-4 pl-3 text-base font-medium ${isRoute("/admin/station")
+                                ? "border-green-500 bg-green-50 text-green-700"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                                }`}
+
                         >
-                            Calendar
-                        </DisclosureButton>
+                            Estaciones
+                        </Link>
+                        <Link
+                            href="/admin/status"
+                            className={`block border-l-4 py-2 pr-4 pl-3 text-base font-medium ${isRoute("/admin/status")
+                                ? "border-green-500 bg-green-50 text-green-700"
+                                : "border-transparent text-gray-500 hover:border-gray-300 hover:bg-gray-50 hover:text-gray-700"
+                                }`}
+
+                        >
+                            Estados
+                        </Link>
                     </div>
                 </DisclosurePanel>
             </Disclosure>

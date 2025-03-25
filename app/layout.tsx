@@ -23,11 +23,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full bg-gray-50" >
-      <link rel="icon" href="https://launion.com.gt/wp-content/uploads/2019/01/ICONO-100x100.png" sizes="32x32"></link>
+    <html lang="en" className="h-full bg-white" >
+      <link rel="icon" href="https://reclutamiento.launion.com.gt/favicon.ico"></link>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased h-full `}
-         data-testim-main-word-scripts-loaded="true"
+        data-testim-main-word-scripts-loaded="true"
       >
         {children}
       </body>
