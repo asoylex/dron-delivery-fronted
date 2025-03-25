@@ -1,7 +1,8 @@
 
 
 "use client";
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
+import { logoutService } from '@/app/services/auth';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { usePathname } from "next/navigation";
@@ -144,7 +145,35 @@ export default function LayoutClient({ children }: LayoutClientProps) {
                                     </Link>
                                 </div>
                             </div>
+                            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                                <Menu as="div" className="relative ml-3">
+                                    <div>
+                                        <MenuButton className="relative flex rounded-full bg-white text-sm focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:outline-hidden">
+                                            <span className="inline-flex size-10 items-center justify-center rounded-full bg-green-500 shadow-lg">
+                                                <span className="text-white font-semibold">C</span>
+                                            </span>
+                                        </MenuButton>
+                                    </div>
+                                    <MenuItems
+                                        transition
+                                        className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:transform data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
+                                    >
 
+                                        <MenuItem>
+                                            <button
+                                                onClick={() => {
+
+                                                    logoutService();
+                                                    window.location.href = "/login";
+                                                }}
+                                                className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:outline-hidden"
+                                            >
+                                                Cerrar Sesion
+                                            </button>
+                                        </MenuItem>
+                                    </MenuItems>
+                                </Menu>
+                            </div>
                         </div>
                     </div>
 

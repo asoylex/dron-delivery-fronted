@@ -1,8 +1,9 @@
 
-
+import { successAlert, warningAlert } from "../helper/alert";
 const pathURL = process.env.NEXT_PUBLIC_PATH_API;
 
-export function login(email, password) {
+export function login(data) {
+    const { email, password } = data
 
     return fetch(pathURL + '/auth/login', {
 
@@ -14,9 +15,23 @@ export function login(email, password) {
     })
         .then((res) => res.json())
         .then((data) => {
-            if (data.accessToken) {
+            if (data.access_token) {
                 localStorage.setItem('accessToken', data.accessToken);
+                successAlert('Login successful');
+            } else {
+                warningAlert('Login failed');
             }
             return data;
+        })
+        .catch((error) => {
+            warningAlert('An error occurred during login');
+            console.error('Login error:', error);
         });
+}
+
+
+export function logoutService() {
+    localStorage.removeItem('user');
+    localStorage.removeItem('token');
+    document.cookie = 'role=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 }

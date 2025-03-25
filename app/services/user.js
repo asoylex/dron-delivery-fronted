@@ -98,18 +98,20 @@ export function getClients() {
 export function updateClient(client, id) {
 
 
-    client = {
-        ...client,
-        user: {
-            id: id,
-        },
-    };
-    return fetch(pathURL + '/client/' + id, {
-        method: 'PUT',
+    const data = {
+        name: client.name,
+        username: client.username,
+        phone: client.phone,
+        address: client.address,
+        credits: client.credits,
+    }
+
+    return fetch(`${pathURL}/client/${id}`, {
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(client),
+        body: JSON.stringify(data),
     })
         .then((res) => res.json())
         .then((data) => {
@@ -118,6 +120,57 @@ export function updateClient(client, id) {
         })
         .catch((error) => {
             errorAlert('Failed to update client.', 'error');
+            throw error;
+        });
+}
+
+
+export function setLatLong({ userId, lat, long }) {
+    return fetch(pathURL + '/client/' + userId, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ lat, long }),
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            return data;
+        });
+}
+
+export function getClientById(id) {
+    return fetch(pathURL + '/client/' + id, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+        .then((res) => res.json())
+        .then((data) => {
+            return data;
+        });
+}
+
+
+export function discountCredit({ id, discount }) {
+
+    console.log(id, discount, "id, discount");
+    return getClientById(id)
+        .then((client) => {
+            if (!client || !client.credits) {
+                throw new Error('Client not found or credits not available');
+            }
+            const updatedCredits = client.credits - discount;
+
+            return updateClient({ credits: updatedCredits }, id);
+        })
+        .then((updatedClient) => {
+            successAlert('Credit discounted successfully!', 'success');
+            return updatedClient;
+        })
+        .catch((error) => {
+            errorAlert('Failed to discount credit.', 'error');
             throw error;
         });
 }
